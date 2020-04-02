@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .video {
+            position: relative;
+            width: 360px;
+            height: 204px;
+            margin: 100px auto;
+            border: 1px solid red;
+        }
+        .video .pic {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://puui.qpic.cn/video_caps/0/u0033ktbp57.q4.jpg/0');
+            /* background-size: 50%; */
+            background-repeat: no-repeat;
+            background-position: top 0 left 0; 
+        }
+        .video img {
+            width: 100%;
+            height: 100%;
+        }
+        .video .line-box {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background-color: rgba(0, 0, 0, .5);
+            box-sizing: border-box;
+            padding: 10px 5px;
+        }
+        .video .line-box .line {
+            max-width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="video">
+        <img src="https://puui.qpic.cn/tv/0/595903229_285160/0" alt="">
+        <!-- 用于滑动展示图片的 -->
+        <div class="pic"></div>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </div>
+
+    <script>
+        let video = document.getElementsByClassName('video')[0];
+        let lineBox = document.getElementsByClassName('line-box')[0];
+        let line = document.getElementsByClassName('line')[0];
+        let pic = document.getElementsByClassName('pic')[0];
+        video.addEventListener('mousemove', function (e) {
+            lineBox.style.display = 'block';
+            pic.style.display = 'block';
+            let x = e.clientX - video.offsetLeft;
+            line.style.width = x - 5 + 'px';
+
+            // 我们有6张图，所以除以6
+            // 我们可以得到每个盒子的宽度 
+            let part = video.offsetWidth / 6;  
+            let currentPart = parseInt(x / part);
+
+            switch (currentPart) {
+                case 0: 
+                    pic.style.backgroundPosition = 'top 0 left 0';
+                    break;
+                case 1:
+                    pic.style.backgroundPosition = 'top 0 left -360px';
+                    break;
+                case 2: 
+                    pic.style.backgroundPosition = 'top 0 left -720px';
+                    break;
+                case 3:
+                    pic.style.backgroundPosition = 'top -204px left 0';
+                    break;
+                case 4: 
+                    pic.style.backgroundPosition = 'top -204px left -360px';
+                    break;
+                case 5:
+                    pic.style.backgroundPosition = 'top -204px left -720px';
+                    break;
+            }
+        });
+        video.addEventListener('mouseleave', function (e) {
+            lineBox.style.display = 'none';
+            line.style.width = 0 + 'px';
+            pic.style.display = 'none';
+        });
+
+    
+
+    
+    </script>
+</body>
+</html>
