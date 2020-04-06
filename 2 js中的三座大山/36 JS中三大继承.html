@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        /*
+		 * 类的多态：重载和重写
+		 *   JAVA中重载：函数名相同，但是传参类型、数量不同或者返回值不一样，
+         *   这相当与把一个函数重载了 
+         * （JS中没有类似于后台语言中的重载机制：JS中的重载只的是同一个方法，根据传参不同，
+         *   实现不同的业务逻辑）
+		 *   重写：子类重写父类上的方法
+		 */
+
+        // 继承：子类继承父类中的属性和方法
+        //（JS中的继承机制和其它后台语言是不一样的，有自己的独特处理方式）
+
+        // 1. 原型继承 实例通过链式查找
+        // function A () {
+        //     this.x = 100;
+        // }
+        // A.prototype.getX = function () {
+        //     console.log('x ', this.x);
+        // };
+
+        // function B () {
+        //     this.y = 200;
+        // }
+       
+        // B.prototype = new A();
+        // B.prototype.constructor = B;
+        // B.prototype.getY = function () {
+        //     console.log('y ', this.y);
+        // };
+        // let b = new B();
+        // // console.log(b.x);
+        // // b.getX();
+        // console.log(b.constructor);
+        // console.log(b.a);
+
+        // 2. CALL继承：把父类当做普通函数执行，让其执行的时候，方法中的this变为子类的实例即可
+		//  【特点】
+        //     (1). 只能继承父类中的私有属性（继承的私有属性赋值给子类实例的私有属性），
+        //        而且是类似拷贝过来一份，而不是链式查找
+		//     (2). 因为只是把父类当做普通的方法执行，所以父类原型上的 公有属性方法 无法被继承过来
+        // function A () {
+        //     this.x = 100;
+        // }
+        // A.prototype.getX = function () {
+        //     console.log('x ', this.x);
+        // };
+        // function B() {
+        //     this.y = 200;
+        //     // this指向 new B 的实例
+        //     // 相当于复制粘贴A中的代码
+        //     A.call(this); 
+        // }
+        // B.prototype.getY = function () {
+        //     console.log('y ', this.y);
+        // };
+
+        // let b = new B();
+        // console.log(b.y);
+        // b.getX();  call 的方法不可以引用父类原型上面的方法和属性,只是简单的类似的复制父类的代码过来
+
+        // 3. 寄生组合继承: call继承 + 变异版本的原型链继承 共同完成的
+        //     call继承实现: 私有到私有
+        //     原型链继承实现: 公有到公有
+        function A () {
+            this.x = 100;
+        }
+        A.prototype.getX = function () {
+            console.log('x ', this.x);
+        };
+        function B () {
+            this.y = 200;
+            A.call(this);
+        }
+        // Object.create() 创建一个空对象,但是这个空对象的__proto__ 指向A.prototype
+        B.prototype = Object.create(A.prototype);
+        B.prototype.constructor = B;
+        B.prototype.getY = function () {
+            console.log('y ', this.y);
+        };
+        let b = new B();
+        console.log(b.y);
+        b.getY();
+    </script>
+
+    <script>
+        // ES6中的继承   extends 原理和 寄生组合继承 一样
+        class Fu{
+            // 构造函数
+            constructor() {
+                this.a = 100;
+            }
+            // 在Fu的原型上绑定getA的方法
+            getA () {
+                console.log('a ', this.a);
+            }
+        }
+
+        class Zi extends Fu{
+            constructor() {
+                // 一旦子类使用了constructor,就必须调用super
+                super();
+                this.b = 200;
+            }
+            //=>这样和构造函数中的this.xxx=xxx没啥区别，设置的是私有属性（ES7）
+			num = 100;
+            getB() {
+                console.log('b ', this.b);
+            }
+        }
+        let z = new Zi();
+        console.log(z.a);
+        z.getA();
+    
+    </script>
+</body>
+</html>

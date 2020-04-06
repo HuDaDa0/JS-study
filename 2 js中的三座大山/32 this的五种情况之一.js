@@ -90,17 +90,3 @@ f(1, 2, 3)
 
 
 
-
-~function (proto) {
-    function bind () {
-        console.log('px');
-    }
-    proto.bind = bind;
-}(Function.prototype);
-
-let obj = {
-    fn(x, y) {
-        console.log(this, x, y);
-    }
-};
-setTimeout(obj.fn.bind(window, 10, 20), 1000);

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let class2type = {};
+
+
+        "Boolean Number String Function Array Date RegExp Object Error Symbol".split(' ').forEach(item => {
+            class2type[`[object ${item}]`] = item.toLowerCase();
+        })
+        
+        function toType(obj) {
+            if (obj == null) {
+                return obj + '';
+            }
+            // 如果是object类型，就不知道他到底是数组还是正则。。。 
+            // 如果不是object类型或者function类型，他就是基本类型，直接可以用typeof
+            return typeof obj === 'object' || typeof obj === 'function' ? class2type[Object.prototype.toString.call(obj)]: typeof obj;
+        }
+
+        // 检测是否为函数
+        function isFunction(obj) {
+            return toType(obj) === 'function';
+        }
+        
+        // 检测是否为window对象
+		// window.window===window
+        function isWindow(obj) {
+            return obj != null && obj === obj.window;
+        }
+
+        //=>是否为纯粹的对象{}（数组和正则等都不是纯粹的对象）
+		var isPlainObject = function isPlainObject(obj) {
+			var proto, Ctor;
+			if (!obj || toString.call(obj) !== "[object Object]") {
+				return false;
+			}
+			//=>getPrototypeOf获取当前对象的原型
+			proto = Object.getPrototypeOf(obj);
+			// Objects with no prototype (`Object.create( null )`)
+			if (!proto) {
+				return true;
+			}
+			// Objects with prototype are plain iff they were constructed by a global Object function
+			Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
+			return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
+		};
+
+		//=>是否为空对象
+		var isEmptyObject = function isEmptyObject(obj) {
+			var name;
+			for (name in obj) {
+				return false;
+			}
+			return true;
+		};
+
+		//=>是否为数组或者类数组
+		var isArrayLike = function isArrayLike(obj) {
+			var length = !!obj && "length" in obj && obj.length,
+				type = toType(obj);
+			if (isFunction(obj) || isWindow(obj)) {
+				return false;
+			}
+			return type === "array" || length === 0 || typeof length === "number" && length > 0 && (length - 1) in obj;
+		};
+    </script>
+</body>
+</html>

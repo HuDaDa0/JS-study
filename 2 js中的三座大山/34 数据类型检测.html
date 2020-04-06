@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 数据检测类型的四种方法
+        // 1. typeof  返回的都是字符串 字符串对应的是数据类型
+        // "number"  "string"  "boolean" "object" "function"
+        //  局限性
+        //    typeof []    =>  "object"
+        //    typeof null  =>  "object"
+        //    typeof /^$/  =>  "object"
+
+        // 2/3. instanceof / constructor
+        //    检测某个实例是否属于这个类
+        //    检测机制：所有出现在其 原型链 上的 类 ，检测结果都是true
+        //   new Number(12) instanceof Number  => true
+        //   12 instanceof Number   => false  因为dir(12)没有结果，找不到类
+        //   [] instanceof Array   => true
+        //  【局限性】
+        //     由于可以通过 __proto__ 或者 prototype 改动原型链的动向，
+        //     所以instanceof检测出来的结果并不一定准确
+        //     基本数据类型的值，连对象都不是，更没有__proto__, 虽说也是属于类的实例，
+        //     在JS中也可以调取所属类原型上的方法，但是instanceof认
+
+        // 4. Object.prototype.toString.call([value]) / ({}).prototype.toString.call([value])
+        //  返回的结构都是 "[object 所属类的信息]"  不是用来转换为字符串的，而是返回当前实例所属类的信息
+        // "[object Object/Array/Number/String/Function/Boolean/Symbol]"
+        // 
+        // Number/String/Boolean/Symbol他们的原型上都有：
+		//   =>toString：转化为字符串
+		//   =>valueOf：返回原始值
+		// Array/RegExp/Function等内置类的原型上都有
+		//   =>toString：转化为字符串
+		// Object的原型上
+		//   =>toString：返回当前实例所属类的信息
+		//   =>valueOf：返回原始值	
+
+        
+    
+    </script>
+</body>
+</html>
